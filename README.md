@@ -107,3 +107,29 @@ And join the Nx community:
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+
+## Useful commands
+
+Create the Nx workspace
+- npx create-nx-workspace@latest planaday
+
+Add Next.js as a plugin
+- `cd planaday`, then `npx nx add @nx/next`
+
+Generate the web app
+- npx nx g @nx/next:app apps/web
+
+Add NestJS and generate the API app
+- `npx nx add @nx/nest` then `npx nx g @nx/nest:app apps/api`. Same idea as the frontend: this gives you a working NestJS app (with a default `AppModule`, `AppController`, `AppService`) inside `apps/api`
+
+Generate the shared-types library
+- npx nx g @nx/js:lib libs/shared-types
+
+Verify both apps run side by side
+- In one terminal: `npx nx serve api` (defaults to http://localhost:3000/api or similar — check the log output for the exact port). 
+- In another: `npx nx serve web` (defaults to http://localhost:4200 or 3000 depending on version — again, check the log).
+
+Install Prisma into the api app
+- From the repo root: `npm install prisma @prisma/client -D`
+- then do `npx prisma init --datasource-provider postgresql` inside `apps/api`
+- This creates `apps/api/prisma/schema.prisma` and a `.env` with a `DATABASE_URL` placeholder — replace it with the real connection string.
