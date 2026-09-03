@@ -133,3 +133,45 @@ Install Prisma into the api app
 - From the repo root: `npm install prisma @prisma/client -D`
 - then do `npx prisma init --datasource-provider postgresql` inside `apps/api`
 - This creates `apps/api/prisma/schema.prisma` and a `.env` with a `DATABASE_URL` placeholder — replace it with the real connection string.
+
+Run the migration and generate the client
+- This creates the actual table in Postgres and generates the type-safe Prisma Client
+npx prisma migrate dev --name init
+
+Generate Module inside apps/api/src/app
+- npx nx g @nx/nest:module src/app/schedule
+- npx nx g @nx/nest:controller src/app/schedule
+- npx nx g @nx/nest:service src/app/schedule
+
+How to start postgress locally
+-- brew services start postgresql@16
+-- Check if postgress is started by this command:
+ - brew services list
+-- Run `psql -d postgres` and it will take you to inside postgress server
+
+-- Connection to postgress can be made directly by doing 
+ -- # Connects as user Sarvansh to database Sarvansh `psql`
+-- Connects as user postgres to database postgres
+ -- # psql -U postgres -d postgres
+
+
+-- Connecting to database
+ Sarvansh@Kaveris-MacBook-Air api % psql -U postgres -d planaday
+ -- planaday=# SELECT * FROM "ScheduleBlock";
+
+-- To call Creating a schedule endpoint
+  
+  curl -X POST http://localhost:3000/api/schedule \
+  -H "Content-Type: application/json" \
+  -d '{"date":"2026-08-20","startHour":9,"endHour":10,"title":"Phase 2 Verification","category":"Engineering","status":"planned"}'
+
+
+-- To sync postgres with new schema changes, just run this
+  --Sarvansh@Kaveris-MacBook-Air api % npx prisma db push    
+
+`
+-- to run both the apps together
+    -- npx nx run-many -t serve
+
+-- For building the agent
+    -- npx nx build agent
